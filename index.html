@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gayatri's Seemantham</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Montserrat:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="invite">
+        <!-- <p class="kicker">Paperless Post Flyer</p> -->
+        <h1>Gayatri's Seemantham</h1>
+
+        <div class="block">
+          <p class="label">Hosted by</p>
+          <p class="value">Gayatri and Haresh</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="block">
+          <p class="label">When</p>
+          <p class="value">Saturday, February 21</p>
+          <p class="value">11:30AM PST</p>
+        </div>
+
+        <div class="block">
+          <p class="label">Where</p>
+          <p class="value">The Lounge @ Monticello</p>
+          <p class="value">3485 Monroe St</p>
+          <p class="value">Santa Clara, CA 95051</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <p class="message">
+          With great joy, we look forward to welcoming our baby and warmly invite
+          you to join us for the Seemantham (traditional baby shower) ceremony to
+          celebrate this auspicious occasion.
+        </p>
+
+        <button class="rsvp-button" type="button" id="rsvpToggle">RSVP</button>
+
+        <form class="rsvp-form" id="rsvpForm">
+          <label>
+            Full name
+            <input type="text" name="name" required />
+          </label>
+          <label>
+            Email (optional)
+            <input type="email" name="email" />
+          </label>
+          <label>
+            Total attending
+            <select name="attending" required>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </label>
+          <label>
+            Notes (optional)
+            <textarea name="notes" rows="3"></textarea>
+          </label>
+          <button class="rsvp-submit" type="submit">Send RSVP</button>
+          <p class="form-status" id="formStatus" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="art">
+        <img src="assets/elephant.png" alt="A little peanut is on the way" />
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById("rsvpForm");
+      const toggle = document.getElementById("rsvpToggle");
+      const status = document.getElementById("formStatus");
+
+      toggle.addEventListener("click", () => {
+        form.classList.toggle("is-visible");
+        if (form.classList.contains("is-visible")) {
+          form.querySelector("input[name='name']").focus();
+        }
+      });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        status.textContent = "Sending...";
+
+        const payload = new FormData(form);
+        const endpoint = "https://script.google.com/macros/s/AKfycbyAsTE3WaQlmoCu7Xm-QdiZPHakwu2T65dOwQaS7NzeS9QGtHVK873FwXN0bT_RUo8PCg/exec";
+
+        try {
+          const response = await fetch(endpoint, {
+            method: "POST",
+            body: payload,
+          });
+
+          if (!response.ok) {
+            throw new Error("Request failed");
+          }
+
+          form.reset();
+          status.textContent = "Thank you! Your RSVP has been received.";
+        } catch (error) {
+          status.textContent =
+            "Sorry, we could not submit your RSVP. Please try again.";
+        }
+      });
+    </script>
+  </body>
+</html>
