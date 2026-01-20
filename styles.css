@@ -83,7 +83,7 @@ h1 {
 
 .rsvp-button,
 .rsvp-submit {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Cormorant Garamond", serif;
   background: var(--button);
   color: #ffffff;
   border: none;
@@ -98,6 +98,39 @@ h1 {
 .rsvp-button {
   display: inline-block;
   margin-bottom: 1.5rem;
+}
+
+.rsvp-options {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.8rem;
+}
+
+.rsvp-choice {
+  font-family: "Cormorant Garamond", serif;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.26rem;
+  padding: 0.6rem 1.4rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  flex: 0 0 auto;
+  width: 190px;
+}
+
+.rsvp-choice:hover,
+.rsvp-choice:focus-visible {
+  transform: translateY(-1px);
+}
+
+.rsvp-choice.is-selected {
+  background: var(--button);
+  color: #ffffff;
 }
 
 .rsvp-form {
@@ -116,6 +149,10 @@ h1 {
 
 .rsvp-form.is-visible {
   display: flex;
+}
+
+.attending-field.is-hidden {
+  display: none;
 }
 
 label {

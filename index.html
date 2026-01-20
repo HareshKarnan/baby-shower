@@ -46,20 +46,24 @@
           celebrate this auspicious occasion.
         </p>
 
-        <button class="rsvp-button" type="button" id="rsvpToggle">RSVP</button>
+        <div class="rsvp-options" role="group" aria-label="RSVP response">
+          <button class="rsvp-choice" type="button" data-attendance="yes">
+            Will attend
+          </button>
+          <button class="rsvp-choice" type="button" data-attendance="no">
+            Will not attend
+          </button>
+        </div>
 
         <form class="rsvp-form" id="rsvpForm">
+          <input type="hidden" name="rsvp" id="rsvpResponse" />
           <label>
             Full name
             <input type="text" name="name" required />
           </label>
-          <label>
-            Email (optional)
-            <input type="email" name="email" />
-          </label>
-          <label>
+          <label class="attending-field" id="attendingField">
             Total attending
-            <select name="attending" required>
+            <select name="attending">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -71,6 +75,14 @@
               <option value="9">9</option>
               <option value="10">10</option>
             </select>
+          </label>
+          <label>
+            Email (optional)
+            <input type="email" name="email" />
+          </label>
+          <label>
+            Phone (optional)
+            <input type="tel" name="phone" />
           </label>
           <label>
             Notes (optional)
@@ -88,14 +100,26 @@
 
     <script>
       const form = document.getElementById("rsvpForm");
-      const toggle = document.getElementById("rsvpToggle");
       const status = document.getElementById("formStatus");
+      const responseInput = document.getElementById("rsvpResponse");
+      const attendingField = document.getElementById("attendingField");
+      const attendingSelect = attendingField.querySelector("select");
+      const choiceButtons = document.querySelectorAll(".rsvp-choice");
 
-      toggle.addEventListener("click", () => {
-        form.classList.toggle("is-visible");
-        if (form.classList.contains("is-visible")) {
-          form.querySelector("input[name='name']").focus();
-        }
+      const setAttendance = (value) => {
+        responseInput.value = value === "yes" ? "Will attend" : "Will not attend";
+        attendingField.classList.toggle("is-hidden", value !== "yes");
+        attendingSelect.required = value === "yes";
+        form.classList.add("is-visible");
+        form.querySelector("input[name='name']").focus();
+      };
+
+      choiceButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          choiceButtons.forEach((btn) => btn.classList.remove("is-selected"));
+          button.classList.add("is-selected");
+          setAttendance(button.dataset.attendance);
+        });
       });
 
       form.addEventListener("submit", async (event) => {
@@ -116,6 +140,9 @@
           }
 
           form.reset();
+          choiceButtons.forEach((btn) => btn.classList.remove("is-selected"));
+          attendingField.classList.add("is-hidden");
+          attendingSelect.required = false;
           status.textContent = "Thank you! Your RSVP has been received.";
         } catch (error) {
           status.textContent =
