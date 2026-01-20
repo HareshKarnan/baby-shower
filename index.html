@@ -64,6 +64,7 @@
           <label class="attending-field" id="attendingField">
             Total attending
             <select name="attending">
+              <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -110,6 +111,11 @@
         responseInput.value = value === "yes" ? "Will attend" : "Will not attend";
         attendingField.classList.toggle("is-hidden", value !== "yes");
         attendingSelect.required = value === "yes";
+        if (value === "no") {
+          attendingSelect.value = "0";
+        } else if (attendingSelect.value === "0") {
+          attendingSelect.value = "1";
+        }
         form.classList.add("is-visible");
         form.querySelector("input[name='name']").focus();
       };
